@@ -1,0 +1,39 @@
+services:
+    laravel-app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/var/www/html
+        ports:
+            - "8000:8000"
+        depends_on:
+            - mysql
+        networks:
+            - laravel_network
+    nginx:
+        build:
+            context: .
+            dockerfile: Dockerfile.nginx
+        ports:
+            - "8089:80"
+        volumes:
+            - ./:/var/www/html
+        depends_on:
+            - laravel-app
+        networks:
+            - laravel_network
+    mysql:
+        image: mysql:8.0
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: shd
+            MYSQL_PASSWORD: password
+        container_name: mysql_shd
+        networks:
+            - laravel_network
+networks:
+    laravel_network:
+        driver: bridge
