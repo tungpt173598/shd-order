@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('paper_suppliers', function (Blueprint $table) {
+        Schema::create('printing_houses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->integer('price')->nullable();
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paper_suppliers');
+        Schema::dropIfExists('printing_houses');
     }
 };
