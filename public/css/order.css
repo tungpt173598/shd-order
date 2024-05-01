@@ -1,3 +1,60 @@
 .content-container {
     padding: 20px;
+    width: 100%;
+}
+.title {
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+}
+.content {
+    padding-top: 20px;
+    width: 100%;
+}
+.item-container {
+    width: 100%;
+}
+.table-content {
+    width: 100%;
+    border: 1px solid;
+    border-radius: 5px;
+}
+.head {
+    width: 100%;
+    justify-content: space-between;
+}
+.add {
+    border-radius: 10px;
+    background: #0d6efd;
+    color: black;
+    font-size: 20px;
+}
+.header {
+    align-content: center;
+}
+.item {
+    border-radius: 5px;
+    border: 1px solid;
+    margin-bottom: 10px;
+}
+.item-content {
+    padding-left: 10px;
+    width: 90%;
+}
+.item-head {
+    font-size: 15px;
+    font-weight: bold;
+}
+.action {
+    justify-items: center;
+    width: 10%;
+    padding-top: 10px;
+}
+.action-item {
+    height: 50%;
+    width: 100%;
+    justify-items: center;
+}
+.item-icon {
+    font-size: 30px !important;
 }

@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('order');
 });
+Route::get('/paper', 'App\Http\Controllers\PaperSupplierController@index');
+Route::post('/paper', 'App\Http\Controllers\PaperSupplierController@create')->name('create_paper');
