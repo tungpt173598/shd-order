@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 trait BaseResponse
 {
-    protected function success($data = [], $messages = [Messages::RESPONSE_SUCCESS])
+    protected function success($data = [], $messages = ['OK'])
     {
         return response()->json([
             'success' => true,

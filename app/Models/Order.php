@@ -10,6 +10,8 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const PRE_CHARGE = 1;
+    const NOT_CHARGE = 2;
     protected $fillable = [
         'code',
         'customer',
@@ -30,4 +32,5 @@ class Order extends Model
         'deliver',
         'deliver_done',
     ];
+
 }
