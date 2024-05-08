@@ -24,9 +24,9 @@ class OrderController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->service->list();
+        $data = $this->service->list($request);
         $select = [
             'papers' => PaperSupplier::pluck('name', 'id')->toArray(),
             'designs' => Design::pluck('name', 'id')->toArray(),
