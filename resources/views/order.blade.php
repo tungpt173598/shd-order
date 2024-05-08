@@ -6,6 +6,13 @@
             <div class="title">Đơn hàng</div>
             <button type="button" class="add btn btn-primary" data-toggle="modal" data-target="#add">Thêm +</button>
         </div>
+        <div class="search">
+            <label for="search" class="d-none"></label>
+            <input type="text" id="search" name="search" class="form-control" placeholder="Tìm kiếm" value="{{ request('search') }}">
+            <span class="material-symbols-outlined search-button">
+                search
+            </span>
+        </div>
         <div class="content">
             <div class="item-container">
                 @foreach($data as $item)
@@ -184,24 +191,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Huỷ đơn</h5>
-                </div>
-                <div class="modal-body" id="delete-text">
-
-                </div>
-                <input type="hidden" id="delete-id">
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close" data-dismiss="modal">Không xoá</button>
-                    <button type="button" class="btn btn-primary" id="confirm">Xoá</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detail-title"></h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Xoá</h5>
                 </div>
                 <div class="modal-body" id="delete-text">
 
@@ -354,6 +344,9 @@
                     } else {
                         $('#total-price').text(result)
                     }
+            })
+            $('.search-button').click(function (e) {
+                window.location.href = location.protocol + "//" + location.host + location.pathname + '?search=' + $('#search').val();
             })
         })
     </script>

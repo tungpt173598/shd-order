@@ -8,8 +8,9 @@
     font-weight: bold;
 }
 .content {
-    padding-top: 20px;
+    margin-top: 20px;
     width: 100%;
+    border-radius: 5px;
 }
 .item-container {
     width: 100%;
@@ -108,5 +109,17 @@
 
 #pre-price, #total-price {
     padding-left: 7px;
+}
+.search {
+    padding-top: 10px;
+    position: relative;
+}
+#search {
+    border-radius: 10px !important;
+}
+.search-button {
+    position: absolute;
+    right: 10px;
+    top: 15px;
 }
 

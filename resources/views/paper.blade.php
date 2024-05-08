@@ -9,22 +9,21 @@
         <div class="content">
             <div class="item-container">
                 @foreach($data as $item)
-                    <div class="item d-flex">
-                        <div class="item-content">
+                    <div class="item d-flex item-item">
+                        <div class="item-content" data-id="{{ $item->id }}">
                             <div class="item-head">Tên: {{ $item->name }}</div>
                             <div>SĐT: {{ $item->phone }}</div>
-                            <div>Địa chỉ: {{ $item->address }}</div>
                         </div>
-                        <div class="action">
+                        <div class="action d-flex">
+{{--                            <div class="action-item">--}}
+{{--                            <span class="material-symbols-outlined item-icon">--}}
+{{--                                edit--}}
+{{--                            </span>--}}
+{{--                            </div>--}}
                             <div class="action-item">
-                            <span class="material-symbols-outlined item-icon">
-                                edit
-                            </span>
-                            </div>
-                            <div class="action-item">
-                            <span class="material-symbols-outlined item-icon" style="color: red; padding-top: 10px">
-                                delete
-                            </span>
+                                <span class="material-symbols-outlined item-icon delete" data-id="{{ $item->id }}" data-name="{{ $item->name }}" style="color: red;">
+                                    delete
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -49,16 +48,33 @@
                             <label for="phone">Số điện thoại</label>
                             <input type="text" class="form-control" id="phone" aria-describedby="emailHelp" placeholder="Nhập số điện thoại" name="phone">
                         </div>
-                        <div class="form-group">
-                            <label for="address">Địa chỉ</label>
-                            <input type="text" class="form-control" id="address" aria-describedby="emailHelp" placeholder="Nhập địa chỉ" name="address">
-                        </div>
+{{--                        <div class="form-group">--}}
+{{--                            <label for="address">Địa chỉ</label>--}}
+{{--                            <input type="text" class="form-control" id="address" aria-describedby="emailHelp" placeholder="Nhập địa chỉ" name="address">--}}
+{{--                        </div>--}}
                     </form>
                 </div>
                 <input type="hidden" id="url">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close" data-dismiss="modal">Đóng</button>
                     <button type="button" class="btn btn-primary save">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Huỷ đơn</h5>
+                </div>
+                <div class="modal-body" id="delete-text">
+
+                </div>
+                <input type="hidden" id="delete-id">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close" data-dismiss="modal">Không xoá</button>
+                    <button type="button" class="btn btn-primary" id="confirm">Xoá</button>
                 </div>
             </div>
         </div>
@@ -75,7 +91,7 @@
                 modal.modal('show')
             })
             $('.close').click(function () {
-                modal.modal('hide')
+                $(this).closest('.modal').modal('hide')
             })
             $('.save').click(function (e) {
                 e.preventDefault()
@@ -86,7 +102,7 @@
                         "_token": "{{ csrf_token() }}",
                         "name": $('#name').val(),
                         "phone": $('#phone').val(),
-                        "address": $('#address').val(),
+                        // "address": $('#address').val(),
                     },
                     success: function (data) {
                         console.log(data)
@@ -94,6 +110,50 @@
                     },
                     error: function (data) {
                         console.log(data)
+                    }
+                })
+            })
+            $('.item-content').click(function (e) {
+                e.preventDefault()
+                let id = $(this).data('id')
+                $('#url').val('{{ url('paper') . '/' }}' + id)
+                $.ajax({
+                    type: "get",
+                    url: '{{ url('paper') . '/' }}' + id,
+                    data: {
+                        '_token': '{{ csrf_token() }}'
+                    },
+                    success: function (data) {
+                        let item = data.data
+                        modal.find('#name').val(item.name)
+                        modal.find('#phone').val(item.phone)
+                        modal.modal('show')
+                    },
+                    error: function (error) {
+                        alert('Có lỗi hệ thống, vui lòng tải lại trang')
+                    }
+                })
+            })
+            $('.delete').click(function () {
+                let name = $(this).data('name')
+                let id = $(this).data('id')
+                $('#delete-id').val(id)
+                $('#delete-text').text(`Chắn chắc xoá nhà cung cấp ${name}?`)
+                $('#delete').modal('show')
+            })
+            $('#confirm').click(function () {
+                let id = $('#delete-id').val()
+                $.ajax({
+                    url: '{{ url('paper') . '/' }}' + id,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function () {
+                        location.reload()
+                    },
+                    error: function () {
+                        alert('Có lỗi hệ thống, vui lòng tải lại trang')
                     }
                 })
             })

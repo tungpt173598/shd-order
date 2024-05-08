@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\PaperSupplier;
 use App\Services\PaperSupplierService;
 use App\Traits\BaseResponse;
 use Illuminate\Http\Request;
@@ -32,6 +34,32 @@ class PaperSupplierController extends Controller
             return $this->errorParams($validator->errors()->all());
         }
         $result = $this->service->create($request);
+        return $this->baseResponse($result);
+    }
+
+    public function detail($id)
+    {
+        $item = PaperSupplier::findOrFail($id);
+        return $this->success($item);
+    }
+
+    public function update($id, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ], [
+            'name.required' => 'Tên không được trống'
+        ]);
+        if ($validator->fails()) {
+            return $this->errorParams($validator->errors()->all());
+        }
+        $result = $this->service->update($id, $request);
+        return $this->baseResponse($result);
+    }
+
+    public function delete($id)
+    {
+        $result = $this->service->delete($id);
         return $this->baseResponse($result);
     }
 }

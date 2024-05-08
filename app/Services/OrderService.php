@@ -15,8 +15,14 @@ class OrderService extends BaseService
         $this->model = $model;
     }
 
-    public function list()
+    public function list($request)
     {
-        return $this->model->latest()->get();
+        $search = $request->search;
+        $query = $this->model->latest();
+        if (!empty($search)) {
+            $query->where('code', 'LIKE', '%' . $search . '%')
+                ->orWhere('customer', 'LIKE', '%' . $search . '%');
+        }
+        return $query->get();
     }
 }

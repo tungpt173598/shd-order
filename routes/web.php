@@ -20,3 +20,6 @@ Route::post('/order/{id}', 'App\Http\Controllers\OrderController@update')->name(
 Route::delete('/order/{id}', 'App\Http\Controllers\OrderController@delete')->name('delete_order');
 Route::get('/paper', 'App\Http\Controllers\PaperSupplierController@index');
 Route::post('/paper', 'App\Http\Controllers\PaperSupplierController@create')->name('create_paper');
+Route::get('/paper/{id}', 'App\Http\Controllers\PaperSupplierController@detail');
+Route::post('/paper/{id}', 'App\Http\Controllers\PaperSupplierController@update')->name('edit_paper');
+Route::delete('/paper/{id}', 'App\Http\Controllers\PaperSupplierController@delete')->name('edit_paper');
