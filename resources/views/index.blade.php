@@ -29,7 +29,7 @@
 
             <ul class="menu_items">
                 <li class="item">
-                    <a href="/" class="nav_link @if(request()->path() == '/')active @endif">
+                    <a href="/order" class="nav_link @if(request()->path() == 'order')active @endif">
                         <span class="navlink">Đơn</span>
                     </a>
                 </li>
@@ -65,6 +65,43 @@
 </div>
 <!-- JavaScript -->
 <script>
+    if (!String.prototype.splice) {
+        /**
+         * {JSDoc}
+         *
+         * The splice() method changes the content of a string by removing a range of
+         * characters and/or adding new characters.
+         *
+         * @this {String}
+         * @param {number} start Index at which to start changing the string.
+         * @param {number} delCount An integer indicating the number of old chars to remove.
+         * @param {string} newSubStr The String that is spliced in.
+         * @return {string} A new string with the spliced substring.
+         */
+        String.prototype.splice = function(start, delCount, newSubStr) {
+            return this.slice(0, start) + newSubStr + this.slice(start + Math.abs(delCount));
+        };
+    }
+    function formatCurrency(amount) {
+        // Chuyển số thành chuỗi và đảm bảo rằng nó là kiểu số
+        amount = parseFloat(amount);
+        console.log(amount)
+        // Kiểm tra xem amount có phải là một số hợp lệ không
+        if (isNaN(amount)) {
+            return "";
+        }
+
+        // Định dạng chuỗi tiền tệ
+        var parts = amount.toFixed(2).toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+        // Loại bỏ phần thập phân nếu nó là ".00"
+        if (parts[1] === "00") {
+            return parts[0] + 'đ';
+        } else {
+            return parts.join(",") + 'đ';
+        }
+    }
     const body = document.querySelector("body");
     const darkLight = document.querySelector("#darkLight");
     const sidebar = document.querySelector(".sidebar");

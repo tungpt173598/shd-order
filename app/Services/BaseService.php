@@ -24,7 +24,8 @@ class BaseService
     {
         try {
             $params = $this->getParams($request);
-            return $this->model->create($params);
+            $this->model->create($params);
+            return $this->success();
         } catch (\Exception $exception) {
             return $this->error();
         }
@@ -40,7 +41,7 @@ class BaseService
         }
         try {
             $object->save();
-            return $object;
+            return $this->success();
         } catch (\Exception $exception) {
             return $this->error();
         }
@@ -100,6 +101,7 @@ class BaseService
     {
         try {
             $this->model->findOrFail($id)->delete();
+            return $this->success();
         } catch (\Exception $exception) {
             return $this->error();
         }
@@ -114,7 +116,7 @@ class BaseService
         ];
     }
 
-    protected function error($messages = ['Server Error'], $data = [])
+    protected function error($messages = ['Có lỗi xảy ra, vui lòng tải lại trang'], $data = [])
     {
         return [
             'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
