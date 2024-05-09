@@ -8,6 +8,7 @@ use App\Services\PaperSupplierService;
 use App\Traits\BaseResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class PaperSupplierController extends Controller
 {
@@ -26,9 +27,13 @@ class PaperSupplierController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'bail|required|unique:paper_suppliers,name|max:255',
+            'name' => ['bail', 'required', 'max:255', Rule::unique('paper_suppliers')->whereNull('deleted_at')],
             'phone' => 'bail|nullable|numeric|digits_between:9,11',
             'address' => 'nullable|max:255'
+        ], [
+            'name.required' => 'Xin hãy nhập tên nhà cung cấp',
+            'name.unique' => 'Nhà cung cấp đã tồn tại',
+            'phone.digits_between' => 'Xin hãy nhập SĐT từ 9 đến 11 số',
         ]);
         if ($validator->fails()) {
             return $this->errorParams($validator->errors()->all());
@@ -46,9 +51,16 @@ class PaperSupplierController extends Controller
     public function update($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required'
+            'name' => [
+                'bail',
+                'required',
+                'max:255',
+                Rule::unique('paper_suppliers')->whereNull('deleted_at')->ignore($id)],
+            'phone' => 'bail|nullable|numeric|digits_between:9,11',
         ], [
-            'name.required' => 'Tên không được trống'
+            'name.required' => 'Xin hãy nhập tên nhà cung cấp',
+            'name.unique' => 'Nhà cung cấp đã tồn tại',
+            'phone.digits_between' => 'Xin hãy nhập SĐT từ 9 đến 11 số',
         ]);
         if ($validator->fails()) {
             return $this->errorParams($validator->errors()->all());

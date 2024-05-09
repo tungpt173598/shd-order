@@ -246,7 +246,6 @@
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        console.log(data)
                         location.reload()
                     },
                     error: function (error) {
@@ -266,7 +265,6 @@
                         '_token': '{{ csrf_token() }}'
                     },
                     success: function (data) {
-                        console.log(data)
                         let item = data.data
                         title.text(item.code)
                         modal.find('#customer').val(item.customer)

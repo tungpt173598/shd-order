@@ -104,12 +104,13 @@
                         "phone": $('#phone').val(),
                         // "address": $('#address').val(),
                     },
+                    dataType: 'json',
                     success: function (data) {
-                        console.log(data)
                         location.reload()
                     },
-                    error: function (data) {
-                        console.log(data)
+                    error: function (error) {
+                        let messages = error.responseJSON.messages
+                        alert(messages.join(' \n'))
                     }
                 })
             })
