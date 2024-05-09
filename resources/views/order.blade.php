@@ -215,6 +215,8 @@
                 modal.find('#price').val('')
                 modal.find(`input[name="payment_type"][value="2"]`).prop('checked', true)
                 $('#money').addClass('d-none')
+                $('#money').text('')
+                $('#total-price').text('')
                 modal.find('#money').val('')
                 modal.find('select[name="design"]').val('')
                 modal.find('select[name="paper_supplier"]').val('')
