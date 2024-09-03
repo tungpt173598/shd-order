@@ -36,6 +36,14 @@ body.dark {
     z-index: 1000;
     box-shadow: 0 0 2px var(--grey-color-light);
 }
+.sticky{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    /*left: 10px;*/
+    /*right: 20px;*/
+    /*bottom: 10px;*/
+}
 .logo_item {
     display: flex;
     align-items: center;
@@ -202,7 +210,25 @@ body.dark {
     color: var(--white-color) !important;
     background: var(--blue-color);
 }
-
+#sidebarOpen {
+    font-size: 25px;
+    display: block;
+    margin-right: 10px;
+    cursor: pointer;
+    color: var(--grey-color);
+}
+#price-toggle {
+    cursor: pointer;
+}
+.type-price {
+    cursor: pointer;
+    white-space: inherit !important;
+    font-size: 15px !important;
+    padding-right: 5px !important;
+}
+.submenu {
+    padding-left: 5px !important;
+}
 @media screen and (max-width: 768px) {
     #sidebarOpen {
         font-size: 25px;
