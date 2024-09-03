@@ -83,7 +83,7 @@
         $(document).ready(function () {
             let modal = $('#add')
             $('.add').click(function () {
-                modal.find('#modal-title').text('Thêm nhà cung cấp giấy')
+                modal.find('#partial-title').text('Thêm nhà cung cấp giấy')
                 $('#name').val('')
                 $('#phone').val('')
                 $('#address').val('')
@@ -91,7 +91,7 @@
                 modal.modal('show')
             })
             $('.close').click(function () {
-                $(this).closest('.modal').modal('hide')
+                $(this).closest('.partial').modal('hide')
             })
             $('.save').click(function (e) {
                 e.preventDefault()

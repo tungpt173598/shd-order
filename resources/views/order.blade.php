@@ -4,7 +4,9 @@
     <div class="content-container">
         <div class="head d-flex">
             <div class="title">Đơn hàng</div>
-            <button type="button" class="add btn btn-primary" data-toggle="modal" data-target="#add">Thêm +</button>
+            @if(\Illuminate\Support\Facades\Auth::check())
+                <button type="button" class="add btn btn-primary" data-toggle="modal" data-target="#add">Thêm +</button>
+            @endif
         </div>
         <div class="search">
             <label for="search" class="d-none"></label>
@@ -206,8 +208,9 @@
     </div>
     <script>
         $(document).ready(function () {
+            let login = '{{ \Illuminate\Support\Facades\Auth::check() }}'
             let modal = $('#add')
-            let title = modal.find('#modal-title')
+            let title = modal.find('#partial-title')
             $('.add').click(function () {
                 title.text('Tạo đơn')
                 modal.find('#customer').val('')
@@ -234,7 +237,7 @@
                 modal.modal('show')
             })
             $('.close').click(function () {
-                $(this).closest('.modal').modal('hide')
+                $(this).closest('.partial').modal('hide')
             })
             $('.save').click(function (e) {
                 e.preventDefault()
@@ -294,6 +297,11 @@
                         modal.find('input[name="machining_done"]').prop('checked', item.machining_done)
                         modal.find('input[name="pack_done"]').prop('checked', item.pack_done)
                         modal.find('input[name="deliver_done"]').prop('checked', item.deliver_done)
+                        if (!login) {
+                            modal.find('input').attr('disabled', 'disabled')
+                            modal.find('select').attr('disabled', 'disabled')
+                            modal.find('.save').hide()
+                        }
                         modal.modal('show')
                     },
                     error: function () {

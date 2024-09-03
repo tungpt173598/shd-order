@@ -25,7 +25,9 @@ class DatabaseSeeder extends Seeder
             DesignSeeder::class,
             MachiningSeeder::class,
             DeliverSeeder::class,
-            PrintSeeder::class
+            PrintSeeder::class,
+            ProductTypeSeeder::class,
+            UserSeeder::class
         ]);
     }
 }

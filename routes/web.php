@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -8,12 +9,25 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
-Route::get('/order', 'App\Http\Controllers\OrderController@index');
+Route::get('/', function () {
+    return redirect()->to('order');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order');
 Route::get('/order/{id}', 'App\Http\Controllers\OrderController@detail');
 Route::post('/order', 'App\Http\Controllers\OrderController@create')->name('create_order');
 Route::post('/order/{id}', 'App\Http\Controllers\OrderController@update')->name('edit_order');
@@ -23,3 +37,6 @@ Route::post('/paper', 'App\Http\Controllers\PaperSupplierController@create')->na
 Route::get('/paper/{id}', 'App\Http\Controllers\PaperSupplierController@detail');
 Route::post('/paper/{id}', 'App\Http\Controllers\PaperSupplierController@update')->name('edit_paper');
 Route::delete('/paper/{id}', 'App\Http\Controllers\PaperSupplierController@delete')->name('edit_paper');
+Route::get('/load-price-views', [\App\Http\Controllers\ViewsController::class, 'index'])->name('load.price.views');
+
+require __DIR__.'/auth.php';
