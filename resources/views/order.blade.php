@@ -55,11 +55,13 @@
 {{--                                    edit--}}
 {{--                                </span>--}}
 {{--                            </div>--}}
-                            <div class="action-item">
+                            @if(\Illuminate\Support\Facades\Auth::check())
+                                <div class="action-item">
                                 <span class="material-symbols-outlined item-icon delete" data-code="{{ $item->code }}" data-customer="{{ $item->customer }}" data-id="{{ $item->id }}" style="color: red;">
                                     delete
                                 </span>
-                            </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 @endforeach
