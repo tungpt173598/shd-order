@@ -53,22 +53,22 @@
                     </a>
                 </li>
                 <li class="item">
-                    <a href="#" class="nav_link">
+                    <a href="print" class="nav_link @if(request()->path() == 'print')active @endif">
                         <span class="navlink">In</span>
                     </a>
                 </li>
                 <li class="item">
-                    <a href="#" class="nav_link">
+                    <a href="process" class="nav_link @if(request()->path() == 'process')active @endif">
                         <span class="navlink">Gia công</span>
                     </a>
                 </li>
                 <li class="item">
-                    <a href="#" class="nav_link">
+                    <a href="pack" class="nav_link @if(request()->path() == 'pack')active @endif">
                         <span class="navlink">Đóng gói</span>
                     </a>
                 </li>
                 <li class="item">
-                    <a href="#" class="nav_link">
+                    <a href="deliver" class="nav_link @if(request()->path() == 'deliver')active @endif">
                         <span class="navlink">Giao hàng</span>
                     </a>
                 </li>
@@ -116,11 +116,6 @@
     $(document).ready(function () {
         $('#sidebarOpen').click(function () {
             $('.sidebar').toggleClass('close')
-        })
-        $('.content-container').click(function () {
-            if (!$('.sidebar').hasClass('close')) {
-                $('.sidebar').toggleClass('close')
-            }
         })
         $('#price-toggle').click(function () {
             $('.submenu').toggleClass('d-none')
@@ -170,6 +165,11 @@
 
     if (window.innerWidth < 768) {
         sidebar.classList.add("close");
+        $('.content-container').click(function () {
+            if (!$('.sidebar').hasClass('close')) {
+                $('.sidebar').toggleClass('close')
+            }
+        })
     } else {
         sidebar.classList.remove("close");
     }

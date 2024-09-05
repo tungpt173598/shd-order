@@ -122,4 +122,15 @@
     right: 10px;
     top: 15px;
 }
+.filter-date {
+    margin-top: 10px;
+    justify-content: space-between;
+}
+.filter-item {
+    width: 30%;
+}
+.filter-item input {
+    border-radius: 10px !important;
+
+}
 

@@ -22,8 +22,7 @@ class DeliverSeeder extends Seeder
             'Trường',
             'Quyến',
             'Anh Hùng',
-            'Grab',
-            'Khác'
+            'Grab'
         ];
         foreach ($data as $name) {
             Deliver::create(['name' => $name]);

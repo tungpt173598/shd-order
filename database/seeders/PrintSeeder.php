@@ -20,8 +20,7 @@ class PrintSeeder extends Seeder
         $data = [
             'PTVT',
             'SHD',
-            'Bình Trần Gia',
-            'Khác'
+            'Bình Trần Gia'
         ];
         foreach ($data as $name) {
             PrintingHouse::create(['name' => $name]);

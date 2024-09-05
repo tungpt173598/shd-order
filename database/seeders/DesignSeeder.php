@@ -18,8 +18,7 @@ class DesignSeeder extends Seeder
     {
         $data = [
             'Có sẵn',
-            'SHD',
-            'Khác'
+            'SHD'
         ];
         foreach ($data as $name) {
             Design::create(['name' => $name]);

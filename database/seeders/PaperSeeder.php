@@ -22,8 +22,7 @@ class PaperSeeder extends Seeder
             'An Giang',
             'Nhật Linh',
             'Linh Hiếu',
-            'Nam Hưng',
-            'Khác'
+            'Nam Hưng'
         ];
         foreach ($data as $name) {
             PaperSupplier::create(['name' => $name]);

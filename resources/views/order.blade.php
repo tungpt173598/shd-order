@@ -1,5 +1,11 @@
 @extends('index')
 @section('content')
+    @php
+        $year = request('year') ?? \Carbon\Carbon::now()->year;
+        $yearSelect = \Carbon\Carbon::now()->year;
+        $month = $year > 0 ? (request('month') ?? \Carbon\Carbon::now()->month) : 0;
+        $days = $month > 0 ? cal_days_in_month( 0, $month, $year) : 0;
+    @endphp
     <link rel="stylesheet" href="{{ asset('css/order.css') }}">
     <div class="content-container">
         <div class="head d-flex">
@@ -14,6 +20,35 @@
             <span class="material-symbols-outlined search-button">
                 search
             </span>
+        </div>
+        <div class="d-flex filter-date">
+            <div class="filter-item">
+                <label for="year">Năm</label>
+                <select name="year" id="year" class="form-select" aria-label="Default select example">
+                    <option value="0" @if($year == 0) selected @endif></option>
+                    @for($i = $yearSelect - 30; $i <= $yearSelect + 5; $i++)
+                        <option value="{{ $i }}" @if($i == $year) selected @endif>{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="month">Tháng</label>
+                <select name="month" id="month" class="form-select" aria-label="Default select example">
+                    <option value="0" @if($month == 0) selected @endif></option>
+                    @for($i = 1; $i < 13; $i++)
+                        <option value="{{ $i }}" @if($i == $month) selected @endif>{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+            <div class="filter-item">
+                <label for="day">Ngày</label>
+                <select name="day" id="day" class="form-select" aria-label="Default select example">
+                    <option value="0" @if(request('day') == 0) selected @endif></option>
+                    @for($i = 1; $i <= $days; $i++)
+                        <option value="{{ $i }}" @if($i == request('day')) selected @endif>{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
         </div>
         <div class="content">
             <div class="item-container">
@@ -122,6 +157,7 @@
                                     @foreach($select['designs'] as $id => $paper)
                                         <option value="{{ $paper }}">{{ $paper }}</option>
                                     @endforeach
+                                        <option value="Khác">Khác</option>
                                 </select>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="design_done">
                             </div>
@@ -133,6 +169,7 @@
                                     @foreach($select['papers'] as $id => $paper)
                                         <option value="{{ $paper }}">{{ $paper }}</option>
                                     @endforeach
+                                        <option value="Khác">Khác</option>
                                 </select>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="paper_done">
                             </div>
@@ -144,6 +181,7 @@
                                     @foreach($select['prints'] as $id => $paper)
                                         <option value="{{ $paper }}">{{ $paper }}</option>
                                     @endforeach
+                                        <option value="Khác">Khác</option>
                                 </select>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="print_done">
                             </div>
@@ -155,6 +193,7 @@
                                     @foreach($select['machining'] as $id => $paper)
                                         <option value="{{ $paper }}">{{ $paper }}</option>
                                     @endforeach
+                                        <option value="Khác">Khác</option>
                                 </select>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="machining_done">
                             </div>
@@ -166,6 +205,7 @@
                                     @foreach($select['packs'] as $id => $paper)
                                         <option value="{{ $paper }}">{{ $paper }}</option>
                                     @endforeach
+                                        <option value="Khác">Khác</option>
                                 </select>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="pack_done">
                             </div>
@@ -177,6 +217,7 @@
                                     @foreach($select['delivers'] as $id => $paper)
                                         <option value="{{ $paper }}">{{ $paper }}</option>
                                     @endforeach
+                                        <option value="Khác">Khác</option>
                                 </select>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="deliver_done">
                             </div>
@@ -355,8 +396,21 @@
                         $('#total-price').text(result)
                     }
             })
+
             $('.search-button').click(function (e) {
-                window.location.href = location.protocol + "//" + location.host + location.pathname + '?search=' + $('#search').val();
+
+                window.location.href = location.protocol + "//" + location.host + location.pathname + queryString();
+            })
+            function queryString() {
+                let string = '?'
+                string += 'search=' + $('#search').val()
+                string += '&year=' + $('#year').val()
+                string += '&month=' + $('#month').val()
+                string += '&day=' + $('#day').val()
+                return string
+            }
+            $('.filter-item .form-select').change(function() {
+                window.location.href = location.protocol + "//" + location.host + location.pathname + queryString();
             })
         })
     </script>

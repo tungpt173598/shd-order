@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ asset('css/order.css') }}">
     <div class="content-container">
         <div class="head d-flex">
-            <div class="title">Nhà cung cấp giấy</div>
+            <div class="title">Gia công</div>
             @if(\Illuminate\Support\Facades\Auth::check())
                 <button type="button" class="add btn btn-primary" data-toggle="modal" data-target="#add">Thêm +</button>
             @endif
@@ -88,15 +88,15 @@
             let login = '{{ \Illuminate\Support\Facades\Auth::check() }}'
             let modal = $('#add')
             $('.add').click(function () {
-                modal.find('#partial-title').text('Thêm nhà cung cấp giấy')
+                modal.find('#modal-title').text('Thêm nhà in')
                 $('#name').val('')
                 $('#phone').val('')
                 $('#address').val('')
-                $('#url').val('{{ route('create_paper') }}')
+                $('#url').val('{{ route('create_process') }}')
                 modal.modal('show')
             })
             $('.close').click(function () {
-                $(this).closest('.partial').modal('hide')
+                $(this).closest('.modal').modal('hide')
             })
             $('.save').click(function (e) {
                 e.preventDefault()
@@ -122,10 +122,10 @@
             $('.item-content').click(function (e) {
                 e.preventDefault()
                 let id = $(this).data('id')
-                $('#url').val('{{ url('paper') . '/' }}' + id)
+                $('#url').val('{{ url('process') . '/' }}' + id)
                 $.ajax({
                     type: "get",
-                    url: '{{ url('paper') . '/' }}' + id,
+                    url: '{{ url('process') . '/' }}' + id,
                     data: {
                         '_token': '{{ csrf_token() }}'
                     },
@@ -149,13 +149,13 @@
                 let name = $(this).data('name')
                 let id = $(this).data('id')
                 $('#delete-id').val(id)
-                $('#delete-text').text(`Chắn chắc xoá nhà cung cấp ${name}?`)
+                $('#delete-text').text(`Chắn chắc xoá bên gia công ${name}?`)
                 $('#delete').modal('show')
             })
             $('#confirm').click(function () {
                 let id = $('#delete-id').val()
                 $.ajax({
-                    url: '{{ url('paper') . '/' }}' + id,
+                    url: '{{ url('process') . '/' }}' + id,
                     type: 'DELETE',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -172,23 +172,3 @@
     </script>
 @endsection
 
-{{--            <table class="table-content">--}}
-{{--                <thead>--}}
-{{--                    <tr>--}}
-{{--                        <th style="width: 10%" class="header">STT</th>--}}
-{{--                        <th style="width: 20%" class="header">Tên</th>--}}
-{{--                        <th style="width: 20%" class="header">Phone</th>--}}
-{{--                        <th style="width: 30%" class="header">Địa chỉ</th>--}}
-{{--                        <th style="width: 20%" class="header">Giá</th>--}}
-{{--                    </tr>--}}
-{{--                </thead>--}}
-{{--                <tbody>--}}
-{{--                    <tr>--}}
-{{--                        <td class="">123</td>--}}
-{{--                        <td>12314</td>--}}
-{{--                        <td>2345345345</td>--}}
-{{--                        <td>Bắc Cầu</td>--}}
-{{--                        <td>10000</td>--}}
-{{--                    </tr>--}}
-{{--                </tbody>--}}
-{{--            </table>--}}

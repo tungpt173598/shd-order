@@ -27,8 +27,7 @@ class MachiningSeeder extends Seeder
             'Toản Huệ',
             'Cô Trúc',
             'Duy Quân',
-            'Hùng BIC',
-            'Khác'
+            'Hùng BIC'
         ];
         foreach ($data as $name) {
             Machining::create(['name' => $name]);
