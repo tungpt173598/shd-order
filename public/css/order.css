@@ -133,4 +133,20 @@
     border-radius: 10px !important;
 
 }
+.datepicker,
+.table-condensed {
+    width: 300px;
+    height: 250px;
+}
+
+.delivery-container {
+    position: relative;
+}
+.close-date {
+    position: absolute;
+    top: 31px;
+    right: 5px;
+    cursor: pointer;
+
+}
 

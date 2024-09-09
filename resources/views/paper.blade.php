@@ -87,6 +87,10 @@
         $(document).ready(function () {
             let login = '{{ \Illuminate\Support\Facades\Auth::check() }}'
             let modal = $('#add')
+            modal.modal({
+                backdrop: 'static',
+                keyboard: false
+            });
             $('.add').click(function () {
                 modal.find('#partial-title').text('Thêm nhà cung cấp giấy')
                 $('#name').val('')

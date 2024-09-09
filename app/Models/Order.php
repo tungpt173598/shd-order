@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Order extends Model
 {
@@ -31,6 +33,13 @@ class Order extends Model
         'pack_done',
         'deliver',
         'deliver_done',
+        'delivery_date'
     ];
-
+    protected function deliveryDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => !empty($value) ? Carbon::createFromFormat('Y-m-d', $value)->format('d-m-Y') : null,
+            set: fn (?string $value) => !empty($value) ? Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d') : null,
+        );
+    }
 }

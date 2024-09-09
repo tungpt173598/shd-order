@@ -57,6 +57,7 @@
                         <div class="item-content" data-id="{{ $item->id }}">
                             <div class="item-head">Mã đơn: {{ $item->code }}</div>
                             <div>Khách: {{ $item->customer }}</div>
+                            <div>Ngày giao: {{ $item->delivery_date }}</div>
 {{--                            <div>Giá: {{ format_price($item->price) }}</div>--}}
 {{--                            <div>Đã thanh toán: {{ format_price($item->pre_charge) }}</div>--}}
 {{--                            <div class="d-flex item-info">--}}
@@ -123,6 +124,13 @@
                         <div class="form-group">
                             <label for="customer">Tên khách hàng</label>
                             <input type="text" class="form-control" id="customer" aria-describedby="emailHelp" name="customer">
+                        </div>
+                        <div class="form-group delivery-container">
+                            <label for="delivery_date">Ngày giao hàng</label>
+                            <input class="form-control" id="delivery_date" name="delivery_date" readonly="readonly">
+                            <span class="material-symbols-outlined close-date">
+                                close
+                            </span>
                         </div>
                         <div class="form-group">
                             <label for="price">Giá<span id="total-price"></span></label>
@@ -249,10 +257,37 @@
             </div>
         </div>
     </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(document).ready(function () {
+            $.fn.datepicker.dates['vi'] = {
+                days: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
+                daysShort: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
+                daysMin: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
+                months: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+                monthsShort: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                today: "Hôm nay",
+                clear: "Clear",
+                format: "dd-mm-yyyy",
+                titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
+                weekStart: 0
+            };
+            $('#delivery_date').datepicker({
+                autoclose: true,
+                format: "dd-mm-yyyy",
+                language: 'vi',
+                todayHighlight: true,
+                weekStart: 1,
+                orientation: 'bottom right',
+                forceParse: false
+            })
             let login = '{{ \Illuminate\Support\Facades\Auth::check() }}'
             let modal = $('#add')
+            modal.modal({
+                backdrop: 'static',
+                keyboard: false
+            });
             let title = modal.find('#partial-title')
             $('.add').click(function () {
                 title.text('Tạo đơn')
@@ -318,6 +353,8 @@
                         modal.find('#customer').val(item.customer)
                         modal.find('#code').val(item.code)
                         modal.find('#price').val(item.price)
+                        modal.find('#delivery_date').val(item.delivery_date)
+                        $('#delivery_date').datepicker('setDate', item.delivery_date)
                         modal.find('#total-price').text(formatCurrency(item.price))
                         modal.find('#money').val(item.pre_charge == '0' ? '' : item.pre_charge)
                         modal.find(`input[name="payment_type"][value="${item.payment_type}"]`).prop('checked', true)
@@ -411,6 +448,9 @@
             }
             $('.filter-item .form-select').change(function() {
                 window.location.href = location.protocol + "//" + location.host + location.pathname + queryString();
+            })
+            $('.close-date').click(function () {
+                $('#delivery_date').datepicker('clearDates')
             })
         })
     </script>
