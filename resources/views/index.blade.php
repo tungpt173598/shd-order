@@ -62,16 +62,16 @@
                         <span class="navlink">Gia công</span>
                     </a>
                 </li>
-                <li class="item">
-                    <a href="pack" class="nav_link @if(request()->path() == 'pack')active @endif">
-                        <span class="navlink">Đóng gói</span>
-                    </a>
-                </li>
 {{--                <li class="item">--}}
-{{--                    <a href="deliver" class="nav_link @if(request()->path() == 'deliver')active @endif">--}}
-{{--                        <span class="navlink">Giao hàng</span>--}}
+{{--                    <a href="pack" class="nav_link @if(request()->path() == 'pack')active @endif">--}}
+{{--                        <span class="navlink">Đóng gói</span>--}}
 {{--                    </a>--}}
 {{--                </li>--}}
+                <li class="item">
+                    <a href="deliver" class="nav_link @if(request()->path() == 'deliver')active @endif">
+                        <span class="navlink">Giao hàng</span>
+                    </a>
+                </li>
                 <li class="item">
                     <div class="nav_link" id="price-toggle">
                         <span class="navlink">Tính giá</span>
