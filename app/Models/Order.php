@@ -33,7 +33,9 @@ class Order extends Model
         'pack_done',
         'deliver',
         'deliver_done',
-        'delivery_date'
+        'delivery_date',
+        'mold',
+        'mold_done'
     ];
     protected function deliveryDate(): Attribute
     {

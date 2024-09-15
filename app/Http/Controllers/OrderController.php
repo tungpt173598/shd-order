@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Deliver;
 use App\Models\Design;
 use App\Models\Machining;
+use App\Models\Mold;
 use App\Models\Order;
 use App\Models\Pack;
 use App\Models\PaperSupplier;
@@ -34,6 +35,7 @@ class OrderController extends Controller
             'packs' => Pack::pluck('name', 'id')->toArray(),
             'machining' => Machining::pluck('name', 'id')->toArray(),
             'delivers' => Deliver::pluck('name', 'id')->toArray(),
+            'mold' => Mold::pluck('name', 'id')->toArray()
         ];
         return view('order', compact('data', 'select'));
     }

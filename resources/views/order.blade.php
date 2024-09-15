@@ -207,6 +207,18 @@
                             </div>
                         </div>
                         <div class="form-group d-flex">
+                            <label class="label-select" for="mold">Khuôn bế</label>
+                            <div class="d-flex select-container">
+                                <select name="mold" class="form-select" aria-label="Default select example">
+                                    @foreach($select['mold'] as $id => $paper)
+                                        <option value="{{ $paper }}">{{ $paper }}</option>
+                                    @endforeach
+                                    <option value="Khác">Khác</option>
+                                </select>
+                                <input class="form-check-input check-done" type="checkbox" value="1" name="mold_done">
+                            </div>
+                        </div>
+                        <div class="form-group d-flex">
                             <label class="label-select" for="pack">Đóng gói</label>
                             <div class="d-flex select-container">
                                 <select name="pack" class="form-select" aria-label="Default select example">
@@ -305,12 +317,14 @@
                 modal.find('select[name="machining"]').val('')
                 modal.find('select[name="deliver"]').val('')
                 modal.find('select[name="pack"]').val('')
+                modal.find('select[name="mold"]').val('')
                 modal.find('input[name="paper_done"]').prop('checked', false)
                 modal.find('input[name="design_done"]').prop('checked', false)
                 modal.find('input[name="print_done"]').prop('checked', false)
                 modal.find('input[name="machining_done"]').prop('checked', false)
                 modal.find('input[name="pack_done"]').prop('checked', false)
                 modal.find('input[name="deliver_done"]').prop('checked', false)
+                modal.find('input[name="mold_done"]').prop('checked', false)
                 $('#url').val('{{ route('create_order') }}')
                 modal.modal('show')
             })
@@ -371,12 +385,14 @@
                         modal.find('select[name="machining"]').val(item.machining)
                         modal.find('select[name="deliver"]').val(item.deliver)
                         modal.find('select[name="pack"]').val(item.pack)
+                        modal.find('select[name="mold"]').val(item.mold)
                         modal.find('input[name="design_done"]').prop('checked', item.design_done)
                         modal.find('input[name="paper_done"]').prop('checked', item.paper_done)
                         modal.find('input[name="print_done"]').prop('checked', item.print_done)
                         modal.find('input[name="machining_done"]').prop('checked', item.machining_done)
                         modal.find('input[name="pack_done"]').prop('checked', item.pack_done)
                         modal.find('input[name="deliver_done"]').prop('checked', item.deliver_done)
+                        modal.find('input[name="mold_done"]').prop('checked', item.mold_done)
                         if (!login) {
                             modal.find('input').attr('disabled', 'disabled')
                             modal.find('select').attr('disabled', 'disabled')

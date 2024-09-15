@@ -68,6 +68,11 @@
 {{--                    </a>--}}
 {{--                </li>--}}
                 <li class="item">
+                    <a href="mold" class="nav_link @if(request()->path() == 'mold')active @endif">
+                        <span class="navlink">Khuôn bế</span>
+                    </a>
+                </li>
+                <li class="item">
                     <a href="deliver" class="nav_link @if(request()->path() == 'deliver')active @endif">
                         <span class="navlink">Giao hàng</span>
                     </a>

@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::post('deliver', 'App\Http\Controllers\DeliverController@create')->name('create_deliver');
     Route::post('deliver/{id}', 'App\Http\Controllers\DeliverController@update')->name('update_deliver');
     Route::delete('deliver/{id}', 'App\Http\Controllers\DeliverController@delete')->name('delete_deliver');
+    Route::post('mold', 'App\Http\Controllers\MoldController@create')->name('create_mold');
+    Route::post('mold/{id}', 'App\Http\Controllers\MoldController@update')->name('update_mold');
+    Route::delete('mold/{id}', 'App\Http\Controllers\MoldController@delete')->name('delete_mold');
 });
 Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order');
 Route::get('/order/{id}', 'App\Http\Controllers\OrderController@detail');
@@ -57,6 +60,8 @@ Route::get('/pack', 'App\Http\Controllers\PackController@index');
 Route::get('/pack/{id}', 'App\Http\Controllers\PackController@detail');
 Route::get('/deliver', 'App\Http\Controllers\DeliverController@index');
 Route::get('/deliver/{id}', 'App\Http\Controllers\DeliverController@detail');
+Route::get('/mold', 'App\Http\Controllers\MoldController@index');
+Route::get('/mold/{id}', 'App\Http\Controllers\MoldController@detail');
 Route::get('/load-price-views', [\App\Http\Controllers\ViewsController::class, 'index'])->name('load.price.views');
 
 require __DIR__.'/auth.php';
