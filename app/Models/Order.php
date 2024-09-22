@@ -35,6 +35,7 @@ class Order extends Model
         'deliver_done',
         'delivery_date',
         'mold',
+        'mold_done',
         'paper_type',
         'paper_size',
         'paper_quantity',

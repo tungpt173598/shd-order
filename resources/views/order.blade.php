@@ -5,7 +5,7 @@
         $yearSelect = \Carbon\Carbon::now()->year;
         $month = $year > 0 ? (request('month') ?? \Carbon\Carbon::now()->month) : 0;
         $days = $month > 0 ? cal_days_in_month( 0, $month, $year) : 0;
-        $paper = array_values($select['papers']) ?? [];
+        $papers = array_values($select['papers']) ?? [];
         $design = array_values($select['designs']) ?? [];
         $print = array_values($select['prints']) ?? [];
         $machining = array_values($select['machining']) ?? [];
@@ -79,7 +79,7 @@
                     <tbody>
                     @foreach($data as $i => $item)
                         <tr>
-                            <th scope="row">{{ (request('page') - 1)  * 10 + $i + 1 }}</th>
+                            <th scope="row">{{ (max([request('page') || 0, 1]) - 1)  * 10 + $i + 1 }}</th>
                             <td>{{ $item->code }}</td>
                             <td>{{ $item->customer }}</td>
                             <td>{{ $item->delivery_date }}</td>
@@ -332,7 +332,7 @@
     <script>
         $(document).ready(function () {
             var prints = <?php echo json_encode($print); ?>;
-            var papers = <?php echo json_encode($paper); ?>;
+            var papers = <?php echo json_encode($papers); ?>;
             var designs = <?php echo json_encode($design); ?>;
             var machining = <?php echo json_encode($machining); ?>;
             var delivers = <?php echo json_encode($deliver); ?>;
@@ -553,6 +553,7 @@
                         modal.find('input[name="machining_done"]').prop('checked', item.machining_done)
                         modal.find('input[name="pack_done"]').prop('checked', item.pack_done)
                         modal.find('input[name="deliver_done"]').prop('checked', item.deliver_done)
+                        console.log(item.mold_done)
                         modal.find('input[name="mold_done"]').prop('checked', item.mold_done)
                         if (!login) {
                             modal.find('input').attr('disabled', 'disabled')
