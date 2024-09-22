@@ -35,7 +35,15 @@ class Order extends Model
         'deliver_done',
         'delivery_date',
         'mold',
-        'mold_done'
+        'paper_type',
+        'paper_size',
+        'paper_quantity',
+        'print_zn',
+        'print_type',
+        'process_child_2',
+        'process_child_1',
+        'process_child_3'
+
     ];
     protected function deliveryDate(): Attribute
     {

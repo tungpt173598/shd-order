@@ -14,6 +14,7 @@
 }
 .item-container {
     width: 100%;
+    margin-bottom: 5px;
 }
 .table-content {
     width: 100%;
@@ -29,6 +30,7 @@
     background: #0d6efd;
     color: black;
     font-size: 20px;
+    padding: 0 5px !important;
 }
 .header {
     align-content: center;
@@ -111,23 +113,21 @@
     padding-left: 7px;
 }
 .search {
-    padding-top: 10px;
     position: relative;
-}
-#search {
-    border-radius: 10px !important;
+    width: 70%;
+    padding-right: 10px;
 }
 .search-button {
     position: absolute;
-    right: 10px;
-    top: 15px;
+    right: 15px;
+    top: 8px;
 }
 .filter-date {
     margin-top: 10px;
     justify-content: space-between;
 }
 .filter-item {
-    width: 30%;
+    width: 8%;
 }
 .filter-item input {
     border-radius: 10px !important;
@@ -148,5 +148,32 @@
     right: 5px;
     cursor: pointer;
 
+}
+.paper-container {
+    width: 30%;
+}
+.paper-child-label {
+    vertical-align: middle;
+    line-height: 37.6px;
+}
+.paper-input {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.print-container {
+    width: 45%;
+}
+.other-input {
+    display: none;
+}
+@media (min-width: 800px) {
+    .modal-dialog {
+        max-width: 700px;
+    }
+}
+@media (min-width: 1280px) {
+    .modal-dialog {
+        max-width: 800px;
+    }
 }
 

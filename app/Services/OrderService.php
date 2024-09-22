@@ -39,6 +39,6 @@ class OrderService extends BaseService
                 }
             }
         }
-        return $query->get();
+        return $query->paginate(10);
     }
 }

@@ -5,25 +5,38 @@
         $yearSelect = \Carbon\Carbon::now()->year;
         $month = $year > 0 ? (request('month') ?? \Carbon\Carbon::now()->month) : 0;
         $days = $month > 0 ? cal_days_in_month( 0, $month, $year) : 0;
+        $paper = array_values($select['papers']) ?? [];
+        $design = array_values($select['designs']) ?? [];
+        $print = array_values($select['prints']) ?? [];
+        $machining = array_values($select['machining']) ?? [];
+        $deliver = array_values($select['delivers']) ?? [];
+        $mold = array_values($select['mold']) ?? [];
+        $child1 = $child2 = $child3 = $arr2 = $arr3 = $arr1 = $arr2Map = [];
+        foreach ($select['process_children'] as $children) {
+            $arr1[$children['name']] = $children['id'];
+            $child1[] = ['id' => $children['id'], 'name' => $children['name']];
+            foreach ($children['children'] as $child_2) {
+                $arr2Map[$child_2['name']] = $child_2['id'];
+                $arr2[$children['id']][] = $child_2['name'];
+                $child2[$children['id']][] = ['id' => $child_2['id'], 'name' => $child_2['name']];
+                foreach ($child_2['children'] as $child_3) {
+                    $child3[$child_2['id']][] = ['id' => $child_3['id'], 'name' => $child_3['name']];
+                    $arr3[$child_2['id']][] = $child_3['name'];
+                }
+            }
+        }
     @endphp
     <link rel="stylesheet" href="{{ asset('css/order.css') }}">
     <div class="content-container">
         <div class="head d-flex">
-            <div class="title">Đơn hàng</div>
-            @if(\Illuminate\Support\Facades\Auth::check())
-                <button type="button" class="add btn btn-primary" data-toggle="modal" data-target="#add">Thêm +</button>
-            @endif
-        </div>
-        <div class="search">
-            <label for="search" class="d-none"></label>
-            <input type="text" id="search" name="search" class="form-control" placeholder="Tìm kiếm" value="{{ request('search') }}">
-            <span class="material-symbols-outlined search-button">
+            <div class="search">
+                <label for="search" class="d-none"></label>
+                <input type="text" id="search" name="search" class="form-control" placeholder="Tìm kiếm" value="{{ request('search') }}">
+                <span class="material-symbols-outlined search-button">
                 search
             </span>
-        </div>
-        <div class="d-flex filter-date">
+            </div>
             <div class="filter-item">
-                <label for="year">Năm</label>
                 <select name="year" id="year" class="form-select" aria-label="Default select example">
                     <option value="0" @if($year == 0) selected @endif></option>
                     @for($i = $yearSelect - 30; $i <= $yearSelect + 5; $i++)
@@ -32,7 +45,6 @@
                 </select>
             </div>
             <div class="filter-item">
-                <label for="month">Tháng</label>
                 <select name="month" id="month" class="form-select" aria-label="Default select example">
                     <option value="0" @if($month == 0) selected @endif></option>
                     @for($i = 1; $i < 13; $i++)
@@ -41,7 +53,6 @@
                 </select>
             </div>
             <div class="filter-item">
-                <label for="day">Ngày</label>
                 <select name="day" id="day" class="form-select" aria-label="Default select example">
                     <option value="0" @if(request('day') == 0) selected @endif></option>
                     @for($i = 1; $i <= $days; $i++)
@@ -49,60 +60,48 @@
                     @endfor
                 </select>
             </div>
+            @if(\Illuminate\Support\Facades\Auth::check())
+                <button type="button" class="add btn btn-primary" data-toggle="modal" data-target="#add">Thêm</button>
+            @endif
         </div>
         <div class="content">
             <div class="item-container">
-                @foreach($data as $item)
-                    <div class="item d-flex item-item">
-                        <div class="item-content" data-id="{{ $item->id }}">
-                            <div class="item-head">Mã đơn: {{ $item->code }}</div>
-                            <div>Khách: {{ $item->customer }}</div>
-                            <div>Ngày giao: {{ $item->delivery_date }}</div>
-{{--                            <div>Giá: {{ format_price($item->price) }}</div>--}}
-{{--                            <div>Đã thanh toán: {{ format_price($item->pre_charge) }}</div>--}}
-{{--                            <div class="d-flex item-info">--}}
-{{--                                <div class="info-1">Thiết kế: {{ $item->design }}</div>--}}
-{{--                                <div class="info-2 {{ $item->design_done ? 'item-green' : 'item-red' }}">{{ $item->design_done ? 'Đã xong' : 'Chưa xong' }}</div>--}}
-{{--                            </div>--}}
-{{--                            <div class="d-flex item-info">--}}
-{{--                                <div class="info-1">Giấy: {{ $item->paper_supplier }}</div>--}}
-{{--                                <div class="info-2 {{ $item->paper_done ? 'item-green' : 'item-red' }}">{{ $item->paper_done ? 'Đã xong' : 'Chưa xong' }}</div>--}}
-{{--                            </div>--}}
-{{--                            <div class="d-flex item-info">--}}
-{{--                                <div class="info-1">In: {{ $item->printed_by }}</div>--}}
-{{--                                <div class="info-2 {{ $item->print_done ? 'item-green' : 'item-red' }}">{{ $item->print_done ? 'Đã xong' : 'Chưa xong' }}</div>--}}
-{{--                            </div>--}}
-{{--                            <div class="d-flex item-info">--}}
-{{--                                <div class="info-1">Gia công: {{ $item->machining }}</div>--}}
-{{--                                <div class="info-2 {{ $item->machining_done ? 'item-green' : 'item-red' }}">{{ $item->machining_done ? 'Đã xong' : 'Chưa xong' }}</div>--}}
-{{--                            </div>--}}
-{{--                            <div class="d-flex item-info">--}}
-{{--                                <div class="info-1">Đóng gói: {{ $item->pack }}</div>--}}
-{{--                                <div class="info-2 {{ $item->pack_done ? 'item-green' : 'item-red' }}">{{ $item->pack_done ? 'Đã xong' : 'Chưa xong' }}</div>--}}
-{{--                            </div>--}}
-{{--                            <div class="d-flex item-info">--}}
-{{--                                <div class="info-1">Vận chuyển: {{ $item->deliver }}</div>--}}
-{{--                                <div class="info-2 {{ $item->deliver_done ? 'item-green' : 'item-red' }}">{{ $item->deliver_done ? 'Đã xong' : 'Chưa xong' }}</div>--}}
-{{--                            </div>--}}
-                        </div>
-                        <div class="action d-flex">
-{{--                            <div class="action-item">--}}
-{{--                                <span class="material-symbols-outlined item-icon edit" data-id="{{ $item->id }}">--}}
-{{--                                    edit--}}
-{{--                                </span>--}}
-{{--                            </div>--}}
-                            @if(\Illuminate\Support\Facades\Auth::check())
-                                <div class="action-item">
-                                <span class="material-symbols-outlined item-icon delete" data-code="{{ $item->code }}" data-customer="{{ $item->customer }}" data-id="{{ $item->id }}" style="color: red;">
-                                    delete
-                                </span>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Tên hàng</th>
+                        <th scope="col">Khách</th>
+                        <th scope="col">Ngày giao</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($data as $i => $item)
+                        <tr>
+                            <th scope="row">{{ (request('page') - 1)  * 10 + $i + 1 }}</th>
+                            <td>{{ $item->code }}</td>
+                            <td>{{ $item->customer }}</td>
+                            <td>{{ $item->delivery_date }}</td>
+                            <td>
+                                @if(\Illuminate\Support\Facades\Auth::check())
+                                    <div class="action-item">
+                                        <span class="material-symbols-outlined item-icon edit" data-id="{{ $item->id }}">
+                                            edit
+                                        </span>
+                                        <span class="material-symbols-outlined item-icon delete" data-code="{{ $item->code }}" data-customer="{{ $item->customer }}" data-id="{{ $item->id }}" style="color: red;">
+                                            delete
+                                        </span>
+                                    </div>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
 
+                    </tbody>
+                </table>
+            </div>
+            {{ $data->links() }}
         </div>
     </div>
     <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -167,6 +166,7 @@
                                     @endforeach
                                         <option value="Khác">Khác</option>
                                 </select>
+                                <input name="design" class="form-select other-input" placeholder="Nhập lựa chọn khác..." disabled>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="design_done">
                             </div>
                         </div>
@@ -179,7 +179,25 @@
                                     @endforeach
                                         <option value="Khác">Khác</option>
                                 </select>
+                                <input name="paper_supplier" class="form-select other-input" placeholder="Nhập lựa chọn khác..." disabled>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="paper_done">
+                            </div>
+                        </div>
+                        <div class="form-group d-flex">
+                            <label class="label-select"></label>
+                            <div class="d-flex select-container">
+                                <div class="d-flex paper-container">
+                                    <label for="paper_type" class="paper-child-label">Loại</label>
+                                    <input type="text" class="form-control paper-input" id="paper_type" name="paper_type">
+                                </div>
+                                <div class="d-flex paper-container">
+                                    <label for="paper_size" class="paper-child-label">Khổ</label>
+                                    <input type="text" class="form-control paper-input" id="paper_size" name="paper_size">
+                                </div>
+                                <div class="d-flex paper-container">
+                                    <label for="paper_quantity" class="paper-child-label">SL</label>
+                                    <input type="text" class="form-control paper-input" id="paper_quantity" name="paper_quantity">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group d-flex">
@@ -191,7 +209,21 @@
                                     @endforeach
                                         <option value="Khác">Khác</option>
                                 </select>
+                                <input name="printed_by" class="form-select other-input" placeholder="Nhập lựa chọn khác..." disabled>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="print_done">
+                            </div>
+                        </div>
+                        <div class="form-group d-flex">
+                            <label class="label-select"></label>
+                            <div class="d-flex select-container">
+                                <div class="d-flex print-container align-items-center">
+                                    <label for="print_zn" class="paper-child-label" style="flex: 0 1 auto; white-space: nowrap;">Số kẽm</label>
+                                    <input type="text" class="form-control paper-input" id="print_zn" name="print_zn" style="flex: 1 1 auto;">
+                                </div>
+                                <div class="d-flex print-container align-items-center">
+                                    <label for="print_type" class="paper-child-label" style="flex: 0 1 auto; white-space: nowrap;">Quy cách</label>
+                                    <input type="text" class="form-control paper-input" id="print_type" name="print_type" style="flex: 1 1 auto;">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group d-flex">
@@ -203,7 +235,30 @@
                                     @endforeach
                                         <option value="Khác">Khác</option>
                                 </select>
+                                <input name="machining" class="form-select other-input" placeholder="Nhập lựa chọn khác..." disabled>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="machining_done">
+                            </div>
+                        </div>
+                        <div class="form-group d-flex">
+                            <label class="label-select"></label>
+                            <div class="d-flex select-container">
+                                <div class="d-flex paper-container">
+                                    <select type="text" class="form-control paper-input" id="process_child_1" name="process_child_1">
+                                        @foreach($child1 as $child)
+                                            <option value="{{ $child['name'] }}" data-id="{{ $child['id'] }}">{{ $child['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="d-flex paper-container">
+                                    <select type="text" class="form-control paper-input" id="process_child_2" name="process_child_2">
+                                    </select>
+                                    <input name="process_child_2" class="form-select other-input" placeholder="Nhập lựa chọn khác..." disabled>
+                                </div>
+                                <div class="d-flex paper-container">
+                                    <select type="text" class="form-control paper-input" id="process_child_3" name="process_child_3">
+                                    </select>
+                                    <input name="process_child_3" class="form-select other-input" placeholder="Nhập lựa chọn khác..." disabled>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group d-flex">
@@ -215,21 +270,23 @@
                                     @endforeach
                                     <option value="Khác">Khác</option>
                                 </select>
+                                <input name="mold" class="form-select other-input" placeholder="Nhập lựa chọn khác..." disabled>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="mold_done">
                             </div>
                         </div>
-                        <div class="form-group d-flex">
-                            <label class="label-select" for="pack">Đóng gói</label>
-                            <div class="d-flex select-container">
-                                <select name="pack" class="form-select" aria-label="Default select example">
-                                    @foreach($select['packs'] as $id => $paper)
-                                        <option value="{{ $paper }}">{{ $paper }}</option>
-                                    @endforeach
-                                        <option value="Khác">Khác</option>
-                                </select>
-                                <input class="form-check-input check-done" type="checkbox" value="1" name="pack_done">
-                            </div>
-                        </div>
+{{--                        <div class="form-group d-flex">--}}
+{{--                            <label class="label-select" for="pack">Đóng gói</label>--}}
+{{--                            <div class="d-flex select-container">--}}
+{{--                                <select name="pack" class="form-select" aria-label="Default select example">--}}
+{{--                                    @foreach($select['packs'] as $id => $paper)--}}
+{{--                                        <option value="{{ $paper }}">{{ $paper }}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                        <option value="Khác">Khác</option>--}}
+{{--                                </select>--}}
+{{--                                <input name="pack" class="form-select other-input" placeholder="Nhập lựa chọn khác...">--}}
+{{--                                <input class="form-check-input check-done" type="checkbox" value="1" name="pack_done">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group d-flex">
                             <label class="label-select" for="deliver">Giao hàng</label>
                             <div class="d-flex select-container">
@@ -239,6 +296,7 @@
                                     @endforeach
                                         <option value="Khác">Khác</option>
                                 </select>
+                                <input name="deliver" class="form-select other-input" placeholder="Nhập lựa chọn khác..." disabled>
                                 <input class="form-check-input check-done" type="checkbox" value="1" name="deliver_done">
                             </div>
                         </div>
@@ -273,6 +331,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script>
         $(document).ready(function () {
+            var prints = <?php echo json_encode($print); ?>;
+            var papers = <?php echo json_encode($paper); ?>;
+            var designs = <?php echo json_encode($design); ?>;
+            var machining = <?php echo json_encode($machining); ?>;
+            var delivers = <?php echo json_encode($deliver); ?>;
+            var mold = <?php echo json_encode($mold); ?>;
+            var childData1 = <?php echo json_encode($child1); ?>;
+            var childData2 = <?php echo json_encode($child2); ?>;
+            var childData3 = <?php echo json_encode($child3); ?>;
+            var arr2 = <?php echo json_encode($arr2); ?>;
+            var arr3 = <?php echo json_encode($arr3); ?>;
+            var arr1 = <?php echo json_encode($arr1); ?>;
+            var arr2Map = <?php echo json_encode($arr2Map); ?>;
+            $('select').on('change', function () {
+                let el = $(this)
+                if (el.val() === 'Khác') {
+                    el.hide();
+                    el.prop('disabled', 'disabled')
+                    el.closest('.d-flex').find('.other-input').prop('disabled', false).show().focus();
+                }
+            })
+            $('.other-input').on('blur', function() {
+                if ($(this).val().trim() === '') {
+                    // Nếu input trống, ẩn input và hiển thị lại select
+                    $(this).hide();
+                    $(this).prop('disabled', 'disabled')
+                    $(this).closest('.d-flex').find('select').prop('disabled', false).val('').show();  // Reset lại select
+                }
+            });
+            $('#process_child_1').on('change', function () {
+                setChild2($(this))
+            })
+            function setChild2 (dom) {
+                let childEl2 = $('#process_child_2')
+                childEl2.empty()
+                $('#process_child_3').val('')
+                let child1Id = dom.find('option:selected').data('id')
+                let el = ''
+                childData2[child1Id].forEach(function(item) {
+                    el += `<option value="${item['name']}" data-id="${item['id']}">${item['name']}</option>`
+                })
+                el += `<option value="Khác">Khác</option>`
+                childEl2.append(el)
+                childEl2.val('')
+            }
+            $('#process_child_2').on('change', function () {
+                setChild3($(this))
+            })
+            function setChild3 (dom) {
+                let childEl3 = $('#process_child_3')
+                childEl3.empty()
+                let child2Id = dom.find('option:selected').data('id')
+                let el = ''
+                if (childData3[child2Id]) {
+                    childData3[child2Id].forEach(function(item) {
+                        el += `<option value="${item['name']}" data-id="${item['id']}">${item['name']}</option>`
+                    })
+                    el += `<option value="Khác">Khác</option>`
+                    childEl3.append(el)
+                }
+                childEl3.val('')
+            }
             $.fn.datepicker.dates['vi'] = {
                 days: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
                 daysShort: ["CN", "Hai", "Ba", "Tư", "Năm", "Sáu", "Bảy"],
@@ -306,18 +426,33 @@
                 modal.find('#customer').val('')
                 modal.find('#code').val('')
                 modal.find('#price').val('')
+                modal.find('#paper_type').val('')
+                modal.find('#paper_size').val('')
+                modal.find('#paper_quantity').val('')
+                modal.find('#print_zn').val('')
+                modal.find('#print_type').val('')
                 modal.find(`input[name="payment_type"][value="2"]`).prop('checked', true)
                 $('#money').addClass('d-none')
                 $('#money').text('')
                 $('#total-price').text('')
                 modal.find('#money').val('')
-                modal.find('select[name="design"]').val('')
-                modal.find('select[name="paper_supplier"]').val('')
-                modal.find('select[name="printed_by"]').val('')
-                modal.find('select[name="machining"]').val('')
-                modal.find('select[name="deliver"]').val('')
-                modal.find('select[name="pack"]').val('')
-                modal.find('select[name="mold"]').val('')
+                modal.find('select[name="design"]').val('').prop('disabled', false).show()
+                modal.find('input[name="design"]').val('').prop('disabled', true).hide()
+                modal.find('select[name="paper_supplier"]').val('').prop('disabled', false).show()
+                modal.find('input[name="paper_supplier"]').val('').prop('disabled', 'disabled').hide()
+                modal.find('select[name="printed_by"]').val('').prop('disabled', false).show()
+                modal.find('input[name="printed_by"]').val('').prop('disabled', 'disabled').hide()
+                modal.find('select[name="machining"]').val('').prop('disabled', false).show()
+                modal.find('input[name="machining"]').val('').prop('disabled', 'disabled').hide()
+                modal.find('select[name="deliver"]').val('').prop('disabled', false).show()
+                modal.find('input[name="deliver"]').val('').prop('disabled', 'disabled').hide()
+                modal.find('select[name="mold"]').val('').prop('disabled', false).show()
+                modal.find('input[name="mold"]').val('').prop('disabled', 'disabled').hide()
+                modal.find('select[name="process_child_1"]').val('').prop('disabled', false).show()
+                modal.find('select[name="process_child_2"]').val('').prop('disabled', false).show()
+                modal.find('input[name="process_child_2"]').val('').prop('disabled', 'disabled').hide()
+                modal.find('select[name="process_child_3"]').val('').prop('disabled', false).show()
+                modal.find('input[name="process_child_3"]').val('').prop('disabled', 'disabled').hide()
                 modal.find('input[name="paper_done"]').prop('checked', false)
                 modal.find('input[name="design_done"]').prop('checked', false)
                 modal.find('input[name="print_done"]').prop('checked', false)
@@ -368,6 +503,11 @@
                         modal.find('#code').val(item.code)
                         modal.find('#price').val(item.price)
                         modal.find('#delivery_date').val(item.delivery_date)
+                        modal.find('#paper_type').val(item.paper_type)
+                        modal.find('#paper_size').val(item.paper_size)
+                        modal.find('#paper_quantity').val(item.paper_quantity)
+                        modal.find('#print_zn').val(item.print_zn)
+                        modal.find('#print_type').val(item.print_type)
                         $('#delivery_date').datepicker('setDate', item.delivery_date)
                         modal.find('#total-price').text(formatCurrency(item.price))
                         modal.find('#money').val(item.pre_charge == '0' ? '' : item.pre_charge)
@@ -379,13 +519,34 @@
                             $('#money').addClass('d-none')
                         }
                         modal.find('#money').val(item.pre_charge)
-                        modal.find('select[name="design"]').val(item.design)
-                        modal.find('select[name="paper_supplier"]').val(item.paper_supplier)
-                        modal.find('select[name="printed_by"]').val(item.printed_by)
-                        modal.find('select[name="machining"]').val(item.machining)
-                        modal.find('select[name="deliver"]').val(item.deliver)
-                        modal.find('select[name="pack"]').val(item.pack)
-                        modal.find('select[name="mold"]').val(item.mold)
+
+                        swapInput(modal, 'design', item.design, designs)
+                        swapInput(modal, 'paper_supplier', item.paper_supplier, papers)
+                        swapInput(modal, 'printed_by', item.printed_by, prints)
+                        swapInput(modal, 'machining', item.machining, machining)
+                        swapInput(modal, 'deliver', item.deliver, delivers)
+                        swapInput(modal, 'mold', item.mold, mold)
+                        modal.find('select[name="process_child_1"]').val(item.process_child_1)
+                        if (item.process_child_1) {
+                            setChild2(modal.find('select[name="process_child_1"]'))
+                            if ((arr2[arr1[item.process_child_1]] && arr2[arr1[item.process_child_1]].includes(item.process_child_2)) || !item.process_child_2) {
+                                modal.find('select[name="process_child_2"]').val(item.process_child_2).prop('disabled', false).show()
+                                modal.find('input[name="process_child_2"]').prop('disabled', 'disabled').hide()
+                            } else {
+                                modal.find('input[name="process_child_2"]').val(item.process_child_2).prop('disabled', false).show()
+                                modal.find('select[name="process_child_2"]').prop('disabled', 'disabled').hide()
+                            }
+                            if ((arr2[arr1[item.process_child_1]] && arr2[arr1[item.process_child_1]].includes(item.process_child_2)) && item.process_child_2) {
+                                if ((arr3[arr2Map[item.process_child_2]] && arr3[arr2Map[item.process_child_2]].includes(item.process_child_3)) || !item.process_child_3) {
+                                    setChild3(modal.find('select[name="process_child_2"]'))
+                                    modal.find('select[name="process_child_3"]').val(item.process_child_3).prop('disabled', false).show()
+                                    modal.find('input[name="process_child_3"]').prop('disabled', 'disabled').hide()
+                                } else {
+                                    modal.find('input[name="process_child_3"]').val(item.process_child_3).prop('disabled', false).show()
+                                    modal.find('select[name="process_child_3"]').prop('disabled', 'disabled').hide()
+                                }
+                            }
+                        }
                         modal.find('input[name="design_done"]').prop('checked', item.design_done)
                         modal.find('input[name="paper_done"]').prop('checked', item.paper_done)
                         modal.find('input[name="print_done"]').prop('checked', item.print_done)
@@ -468,6 +629,13 @@
             $('.close-date').click(function () {
                 $('#delivery_date').datepicker('clearDates')
             })
+            function swapInput(modal, name, value, arr) {
+                let use = arr.includes(value) || !value ? 'select' : 'input'
+                let notUse = use === 'select' ? 'input' : 'select'
+                modal.find(`${use}[name="${name}"]`).val(value)
+                modal.find(`${use}[name="${name}"]`).prop('disabled', false).show()
+                modal.find(`${notUse}[name="${name}"]`).prop('disabled', 'disabled').hide()
+            }
         })
     </script>
 @endsection

@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Pack;
 use App\Models\PaperSupplier;
 use App\Models\PrintingHouse;
+use App\Models\ProcessType;
 use App\Services\OrderService;
 use App\Traits\BaseResponse;
 use Illuminate\Http\Request;
@@ -32,10 +33,11 @@ class OrderController extends Controller
             'papers' => PaperSupplier::pluck('name', 'id')->toArray(),
             'designs' => Design::pluck('name', 'id')->toArray(),
             'prints' => PrintingHouse::pluck('name', 'id')->toArray(),
-            'packs' => Pack::pluck('name', 'id')->toArray(),
+//            'packs' => Pack::pluck('name', 'id')->toArray(),
             'machining' => Machining::pluck('name', 'id')->toArray(),
             'delivers' => Deliver::pluck('name', 'id')->toArray(),
-            'mold' => Mold::pluck('name', 'id')->toArray()
+            'mold' => Mold::pluck('name', 'id')->toArray(),
+            'process_children' => ProcessType::with('children.children.children')->select('id', 'name')->whereNull('parent_id')->get()->toArray()
         ];
         return view('order', compact('data', 'select'));
     }
