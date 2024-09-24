@@ -56,7 +56,7 @@ class OrderController extends Controller
             return $this->errorParams(['Tiền tạm ứng không được lớn hơn giá']);
         }
 
-        if ($request->payment_type == 2) {
+        if ($request->payment_type != 1) {
             $request->merge(['pre_charge' => 0]);
         }
         $result = $this->service->create($request);

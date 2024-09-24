@@ -114,7 +114,7 @@
 }
 .search {
     position: relative;
-    width: 70%;
+    width: 50%;
     padding-right: 10px;
 }
 .search-button {
@@ -127,7 +127,7 @@
     justify-content: space-between;
 }
 .filter-item {
-    width: 8%;
+    width: 12%;
 }
 .filter-item input {
     border-radius: 10px !important;
@@ -144,7 +144,7 @@
 }
 .close-date {
     position: absolute;
-    top: 31px;
+    top: 6px;
     right: 5px;
     cursor: pointer;
 

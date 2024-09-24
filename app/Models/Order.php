@@ -43,7 +43,8 @@ class Order extends Model
         'print_type',
         'process_child_2',
         'process_child_1',
-        'process_child_3'
+        'process_child_3',
+        'process_detail'
 
     ];
     protected function deliveryDate(): Attribute
