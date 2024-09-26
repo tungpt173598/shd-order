@@ -73,6 +73,7 @@
                         <th scope="col">Tên hàng</th>
                         <th scope="col">Khách</th>
                         <th scope="col">Ngày giao</th>
+                        <th scope="col">Trạng thái</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -83,6 +84,7 @@
                             <td>{{ $item->code }}</td>
                             <td>{{ $item->customer }}</td>
                             <td>{{ $item->delivery_date }}</td>
+                            <td><span style="color: {{ $item->done ? 'green' : 'red' }}; cursor: pointer" class="order-done" data-value="{{ $item->done ?? 0 }}" data-id="{{ $item->id }}">{{ $item->done ? 'Hoàn thành' : 'Chưa xong' }}</span></td>
                             <td>
                                     <div class="action-item">
                                         <span class="material-symbols-outlined item-icon edit" data-id="{{ $item->id }}">
@@ -489,6 +491,24 @@
                     error: function (error) {
                         let messages = error.responseJSON.messages
                         alert(messages.join(' \n'))
+                    }
+                })
+            })
+            $('.order-done').click(function (e) {
+                e.preventDefault()
+                let id = $(this).data('id')
+                $.ajax({
+                    type: "post",
+                    url: '{{ url('order-done') . '/' }}' + id,
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'done': $(this).data('value') ? 0 : 1
+                    },
+                    success: function (data) {
+                        location.reload()
+                    },
+                    error: function (res) {
+                        alert('Có lỗi hệ thống, vui lòng tải lại trang')
                     }
                 })
             })

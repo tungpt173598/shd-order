@@ -44,8 +44,8 @@ class Order extends Model
         'process_child_2',
         'process_child_1',
         'process_child_3',
-        'process_detail'
-
+        'process_detail',
+        'done'
     ];
     protected function deliveryDate(): Attribute
     {

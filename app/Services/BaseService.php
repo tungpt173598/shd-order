@@ -43,6 +43,7 @@ class BaseService
             $object->save();
             return $this->success();
         } catch (\Exception $exception) {
+
             return $this->error();
         }
 

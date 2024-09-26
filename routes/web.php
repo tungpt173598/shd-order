@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/order', 'App\Http\Controllers\OrderController@create')->name('create_order');
     Route::post('/order/{id}', 'App\Http\Controllers\OrderController@update')->name('edit_order');
+    Route::post('/order-done/{id}', 'App\Http\Controllers\OrderController@updateStatus')->name('edit_order_done');
     Route::delete('/order/{id}', 'App\Http\Controllers\OrderController@delete')->name('delete_order');
     Route::post('/paper', 'App\Http\Controllers\PaperSupplierController@create')->name('create_paper');
     Route::post('/paper/{id}', 'App\Http\Controllers\PaperSupplierController@update')->name('edit_paper');

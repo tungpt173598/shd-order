@@ -85,6 +85,19 @@ class OrderController extends Controller
         if ($request->payment_type == 1 && $request->pre_charge > $request->price) {
             return $this->errorParams(['Tiền tạm ứng không được lớn hơn giá']);
         }
+        if (empty($request->paper_done)) $request->merge(['paper_done' => 0]);
+        if (empty($request->print_done)) $request->merge(['print_done' => 0]);
+        if (empty($request->design_done)) $request->merge(['design_done' => 0]);
+        if (empty($request->machining_done)) $request->merge(['machining_done' => 0]);
+        if (empty($request->deliver_done)) $request->merge(['deliver_done' => 0]);
+        if (empty($request->mold_done)) $request->merge(['mold_done' => 0]);
+        if (empty($request->done)) $request->merge(['done' => 0]);
+        $result = $this->service->update($id, $request);
+        return $this->baseResponse($result);
+    }
+
+    public function updateStatus($id, Request $request)
+    {
         $result = $this->service->update($id, $request);
         return $this->baseResponse($result);
     }
