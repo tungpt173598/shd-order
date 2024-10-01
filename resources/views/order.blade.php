@@ -103,7 +103,7 @@
                     </tbody>
                 </table>
             </div>
-            {{ $data->links() }}
+            {{ $data->withQueryString()->links() }}
         </div>
     </div>
     <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
