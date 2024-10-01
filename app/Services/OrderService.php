@@ -31,11 +31,17 @@ class OrderService extends BaseService
         $month = is_null($request->month) ? Carbon::now()->month : $request->month;
         $day = $request->day;
         if ($year > 0) {
-            $query->whereYear('created_at', $year);
+            $query->where(function ($q) use ($year) {
+                $q->whereYear('created_at', $year)->orWhereYear('delivery_date', $year);
+            });
             if ($month > 0) {
-                $query->whereMonth('created_at', $month);
+                $query->where(function ($q) use ($month) {
+                    $q->whereMonth('created_at', $month)->orWhereMonth('delivery_date', $month);
+                });
                 if (!empty($day) && $day > 0) {
-                    $query->whereDate('created_at', "$year-$month-$day");
+                    $query->where(function ($q) use ($year, $month, $day) {
+                        $q->whereDate('created_at', "$year-$month-$day")->orWhereDate('delivery_date', "$year-$month-$day");
+                    });
                 }
             }
         }
