@@ -41,11 +41,10 @@ class Order extends Model
         'paper_quantity',
         'print_zn',
         'print_type',
-        'process_child_2',
-        'process_child_1',
-        'process_child_3',
         'process_detail',
-        'done'
+        'done',
+        'print_detail',
+        'paper_detail'
     ];
     protected function deliveryDate(): Attribute
     {

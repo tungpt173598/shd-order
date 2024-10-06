@@ -188,22 +188,28 @@
                             </div>
                         </div>
                         <div class="form-group d-flex">
-                            <label class="label-select"></label>
-                            <div class="d-flex select-container">
-                                <div class="d-flex paper-container">
-                                    <label for="paper_type" class="paper-child-label">Loại</label>
-                                    <input type="text" class="form-control paper-input" id="paper_type" name="paper_type">
-                                </div>
-                                <div class="d-flex paper-container">
-                                    <label for="paper_size" class="paper-child-label">Khổ</label>
-                                    <input type="text" class="form-control paper-input" id="paper_size" name="paper_size">
-                                </div>
-                                <div class="d-flex paper-container">
-                                    <label for="paper_quantity" class="paper-child-label">SL</label>
-                                    <input type="text" class="form-control paper-input" id="paper_quantity" name="paper_quantity">
-                                </div>
+                            <label class="label-select" for="paper_detail"></label>
+                            <div class="select-container">
+                                <textarea class="form-control" id="paper_detail" name="paper_detail" placeholder="Nhập chi tiết giấy" rows="2" style="width: 90%"></textarea>
                             </div>
                         </div>
+{{--                        <div class="form-group d-flex">--}}
+{{--                            <label class="label-select"></label>--}}
+{{--                            <div class="d-flex select-container">--}}
+{{--                                <div class="d-flex paper-container">--}}
+{{--                                    <label for="paper_type" class="paper-child-label">Loại</label>--}}
+{{--                                    <input type="text" class="form-control paper-input" id="paper_type" name="paper_type">--}}
+{{--                                </div>--}}
+{{--                                <div class="d-flex paper-container">--}}
+{{--                                    <label for="paper_size" class="paper-child-label">Khổ</label>--}}
+{{--                                    <input type="text" class="form-control paper-input" id="paper_size" name="paper_size">--}}
+{{--                                </div>--}}
+{{--                                <div class="d-flex paper-container">--}}
+{{--                                    <label for="paper_quantity" class="paper-child-label">SL</label>--}}
+{{--                                    <input type="text" class="form-control paper-input" id="paper_quantity" name="paper_quantity">--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group d-flex">
                             <label class="label-select" for="printed_by">In</label>
                             <div class="d-flex select-container">
@@ -218,18 +224,24 @@
                             </div>
                         </div>
                         <div class="form-group d-flex">
-                            <label class="label-select"></label>
-                            <div class="d-flex select-container">
-                                <div class="d-flex print-container align-items-center">
-                                    <label for="print_zn" class="paper-child-label" style="flex: 0 1 auto; white-space: nowrap;">Số kẽm</label>
-                                    <input type="text" class="form-control paper-input" id="print_zn" name="print_zn" style="flex: 1 1 auto;">
-                                </div>
-                                <div class="d-flex print-container align-items-center">
-                                    <label for="print_type" class="paper-child-label" style="flex: 0 1 auto; white-space: nowrap;">Quy cách</label>
-                                    <input type="text" class="form-control paper-input" id="print_type" name="print_type" style="flex: 1 1 auto;">
-                                </div>
+                            <label class="label-select" for="print_detail"></label>
+                            <div class="select-container">
+                                <textarea class="form-control" id="print_detail" name="print_detail" placeholder="Nhập chi tiết in" rows="2" style="width: 90%"></textarea>
                             </div>
                         </div>
+{{--                        <div class="form-group d-flex">--}}
+{{--                            <label class="label-select"></label>--}}
+{{--                            <div class="d-flex select-container">--}}
+{{--                                <div class="d-flex print-container align-items-center">--}}
+{{--                                    <label for="print_zn" class="paper-child-label" style="flex: 0 1 auto; white-space: nowrap;">Số kẽm</label>--}}
+{{--                                    <input type="text" class="form-control paper-input" id="print_zn" name="print_zn" style="flex: 1 1 auto;">--}}
+{{--                                </div>--}}
+{{--                                <div class="d-flex print-container align-items-center">--}}
+{{--                                    <label for="print_type" class="paper-child-label" style="flex: 0 1 auto; white-space: nowrap;">Quy cách</label>--}}
+{{--                                    <input type="text" class="form-control paper-input" id="print_type" name="print_type" style="flex: 1 1 auto;">--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="form-group d-flex">
                             <label class="label-select" for="machining">Gia công</label>
                             <div class="d-flex select-container">
@@ -439,6 +451,8 @@
                 modal.find('#print_zn').val('')
                 modal.find('#print_type').val('')
                 modal.find('#process_detail').val('')
+                modal.find('#paper_detail').val('')
+                modal.find('#print_detail').val('')
                 modal.find('#delivery_date').datepicker('clearDates')
                 modal.find(`input[name="payment_type"][value="2"]`).prop('checked', true)
                 $('#money').text('')
@@ -535,6 +549,8 @@
                         modal.find('#print_zn').val(item.print_zn)
                         modal.find('#print_type').val(item.print_type)
                         modal.find('#process_detail').val(item.process_detail)
+                        modal.find('#paper_detail').val(item.paper_detail)
+                        modal.find('#print_detail').val(item.print_detail)
                         $('#delivery_date').datepicker('setDate', item.delivery_date)
                         modal.find('#total-price').text(formatCurrency(item.price))
                         modal.find('#money').val(item.pre_charge == '0' ? '' : item.pre_charge)
