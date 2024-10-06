@@ -190,7 +190,7 @@
                         <div class="form-group d-flex">
                             <label class="label-select" for="paper_detail"></label>
                             <div class="select-container">
-                                <textarea class="form-control" id="paper_detail" name="paper_detail" placeholder="Nhập chi tiết giấy" rows="2" style="width: 90%"></textarea>
+                                <textarea class="form-control" id="paper_detail" name="paper_detail" placeholder="Nhập chi tiết giấy" rows="3" style="width: 90%"></textarea>
                             </div>
                         </div>
 {{--                        <div class="form-group d-flex">--}}
